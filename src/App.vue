@@ -1,81 +1,68 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref } from 'vue'
+import { 
+	getAuth, 
+	createUserWithEmailAndPassword,
+	onAuthStateChanged,
+	signOut
+	} from "firebase/auth";
+
+const email = ref('')
+const pass = ref('')
+const auth = getAuth()
+const user = ref(null)
+const isSignedIn = ref(null)
+
+const signUp = () => {
+	createUserWithEmailAndPassword(auth, email.value, pass.value)
+	.then((userCredential) => {
+		user.value = userCredential.user
+		isSignedIn.value = true
+		email.value = ''
+		pass.value = ''
+		console.log(user);
+	})
+	.catch((error) => {
+		console.log(error.code, error.message);
+	})
+	// console.log( email.value, pass.value );
+}
+
+onAuthStateChanged(auth, (user) => {
+	user ? isSignedIn.value = true : null
+})
+
+const logOut = () => {
+	signOut(auth).then(() => {
+		isSignedIn.value = null
+	})
+}
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+	<div>
+		<p>Sign Up</p>
+		<form @submit.prevent="signUp">
+			<label for="email">Email</label>
+			<input v-model="email" type="email">
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+			<label for="password">Password</label>
+			<input v-model="pass" type="password">
 
-  <main>
-    <TheWelcome />
-  </main>
+			<button>Register</button>
+		</form>
+	</div>
+	<div v-if="isSignedIn">signed in</div>
+	<div v-else>not signed in</div>
+	<button @click="logOut">Sign Out</button>
 </template>
 
 <style>
-@import './assets/base.css';
+/* @import './assets/base.css'; */
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
 
-  font-weight: normal;
 }
 
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-}
 </style>
