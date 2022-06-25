@@ -41,24 +41,50 @@ const logOut = () => {
 </script>
 
 <template>
-	<div>
-		<p class="text-2xl">Sign Up</p>
-		<form @submit.prevent="signUp">
-			<label for="email">Email</label>
-			<input v-model="email" type="email">
+	<header class="container-xl px-4 py-3 bg-sky-900 text-white">
+		<div class="flex justify-between items-center">
+			<div class="text-2xl">Firebase Simple Admin</div>
+			<nav class="flex items-center">
+				<div v-if="isSignedIn">signed in</div>
+				<div v-else>not signed in</div>
+				<button 
+					v-if="isSignedIn"
+					@click="logOut"
+					class="btn ml-5"
+				>Logout</button>
+			</nav>
+		</div>
+	</header>
 
-			<label for="password">Password</label>
-			<input v-model="pass" type="password">
+	<main class="container-xl px-4 py-3 pt-12">
+		<div class="w-1/3 mx-auto">
+			<p class="text-2xl mb-4">Sign Up</p>
+			<form @submit.prevent="signUp">
+				<input 
+					v-model="email"
+					type="email" 
+					placeholder="Email"
+					class="w-full mb-3 rounded-md"
+				>
+				
+				<input 
+					v-model="pass" 
+					type="password" 
+					placeholder="Password"
+					class="w-full mb-3 rounded-md"
+				>
+				<p class="text-sm text-right mb-3">
+					Already among us? 
+					<a href="#">Log In</a>
+				</p>
 
-			<button class="btn">Register</button>
-		</form>
-	</div>
-	<div v-if="isSignedIn">signed in</div>
-	<div v-else>not signed in</div>
-	<button 
-		@click="logOut"
-		class="btn"
-	>Sign Out</button>
+				<p class="text-right">
+					<button class="btn">Register</button>
+				</p>
+			</form>
+		</div>
+	</main>
+
 </template>
 
 <style>
