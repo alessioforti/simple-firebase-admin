@@ -42,7 +42,7 @@ const logOut = () => {
 
 <template>
 	<div>
-		<p>Sign Up</p>
+		<p class="text-2xl">Sign Up</p>
 		<form @submit.prevent="signUp">
 			<label for="email">Email</label>
 			<input v-model="email" type="email">
@@ -50,19 +50,16 @@ const logOut = () => {
 			<label for="password">Password</label>
 			<input v-model="pass" type="password">
 
-			<button>Register</button>
+			<button class="btn">Register</button>
 		</form>
 	</div>
 	<div v-if="isSignedIn">signed in</div>
 	<div v-else>not signed in</div>
-	<button @click="logOut">Sign Out</button>
+	<button 
+		@click="logOut"
+		class="btn"
+	>Sign Out</button>
 </template>
 
 <style>
-/* @import './assets/base.css'; */
-
-#app {
-
-}
-
 </style>
