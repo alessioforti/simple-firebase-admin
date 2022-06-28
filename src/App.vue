@@ -10,16 +10,24 @@ import {
 
 const auth = getAuth()
 const isSignedIn = ref(null)
-const user = ref(null)
+const user = null
+const email = ref('')
+
+onAuthStateChanged(auth, (user) => {
+	if (user) {
+		isSignedIn.value = true
+		user.value = auth.currentUser
+		email.value = user.email
+	} else {
+		isSignedIn.value = null
+		user.value = null
+	}
+	// console.log(user)
+})
 
 const signTheUserIn = (user) => {
-	onAuthStateChanged(auth, (user) => {
-		user ? isSignedIn.value = true : null
-		user.value = auth.currentUser
-	})
-	// console.log(user.value.email)
+	user.value = auth.currentUser
 }
-
 
 const logOut = () => {
 	signOut(auth).then(() => {
@@ -47,7 +55,7 @@ const logOut = () => {
 
 	<main class="container-xl px-4 py-3 pt-12">
 		<SignUpInVue v-if="!isSignedIn" @logged-in="signTheUserIn"/>
-		<div v-else>hello</div>
+		<div v-else>hello {{ email }}</div>
 	</main>
 
 </template>
