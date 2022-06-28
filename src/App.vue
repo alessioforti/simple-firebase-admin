@@ -16,11 +16,11 @@ const email = ref('')
 onAuthStateChanged(auth, (user) => {
 	if (user) {
 		isSignedIn.value = true
-		user.value = auth.currentUser
+		user = auth.currentUser
 		email.value = user.email
 	} else {
-		isSignedIn.value = null
-		user.value = null
+		isSignedIn.value = false
+		user = null
 	}
 	// console.log(user)
 })
@@ -32,6 +32,7 @@ const signTheUserIn = (user) => {
 const logOut = () => {
 	signOut(auth).then(() => {
 		isSignedIn.value = null
+		user = null
 	})
 }
 
