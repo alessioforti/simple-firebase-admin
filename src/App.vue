@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import SignUpInVue from './components/SignUpIn.vue'
+import User from './components/User.vue'
 
 import { 
 	getAuth, 
@@ -17,6 +18,7 @@ const auth = getAuth()
 const db = getFirestore()
 const isSignedIn = ref(null)
 let user = null
+const userId = ref()
 const userRole = ref(null)
 const email = ref('')
 
@@ -44,10 +46,10 @@ const logOut = () => {
 }
 
 const checkUserRole = async (user) => {
+	userId.value = user.uid
 	const docResp = await getDoc(doc(db, "users", user.uid))
-	const docData = docResp.data()
-	userRole.value = docData.role
-	console.log(userRole.value);
+	const userData = docResp.data()
+	userRole.value = userData.role
 }
 
 
@@ -71,7 +73,7 @@ const checkUserRole = async (user) => {
 	<main class="container-xl px-4 py-3 pt-12">
 		<SignUpInVue v-if="!isSignedIn" @logged-in="signTheUserIn"/>
 		
-		<div v-if="userRole == 'user'">hello {{ email }}</div>
+		<User v-if="userRole == 'user'" :user-id="userId" />
 		<div v-else-if="userRole == 'admin'">hello admin</div>
 	</main>
 
