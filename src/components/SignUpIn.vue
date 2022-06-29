@@ -9,8 +9,6 @@ import {
 	} from 'firebase/auth'
 import {
 	getFirestore,
-	collection, 
-	addDoc,
 	doc,
 	setDoc
 } from 'firebase/firestore'

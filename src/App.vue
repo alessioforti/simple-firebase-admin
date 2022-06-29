@@ -7,11 +7,17 @@ import {
 	onAuthStateChanged,
 	signOut
 	} from 'firebase/auth'
-
+import {
+	getFirestore,
+	doc,
+	getDoc
+} from 'firebase/firestore'
 
 const auth = getAuth()
+const db = getFirestore()
 const isSignedIn = ref(null)
 let user = null
+const userRole = ref(null)
 const email = ref('')
 
 onAuthStateChanged(auth, (user) => {
@@ -19,11 +25,11 @@ onAuthStateChanged(auth, (user) => {
 		isSignedIn.value = true
 		user = auth.currentUser
 		email.value = user.email
+		checkUserRole(user)
 	} else {
 		isSignedIn.value = false
 		user = null
 	}
-	// console.log(user)
 })
 
 const signTheUserIn = (user) => {
@@ -35,6 +41,13 @@ const logOut = () => {
 		isSignedIn.value = null
 		user = null
 	})
+}
+
+const checkUserRole = async (user) => {
+	const docResp = await getDoc(doc(db, "users", user.uid))
+	const docData = docResp.data()
+	userRole.value = docData.role
+	console.log(userRole.value);
 }
 
 
@@ -57,7 +70,9 @@ const logOut = () => {
 
 	<main class="container-xl px-4 py-3 pt-12">
 		<SignUpInVue v-if="!isSignedIn" @logged-in="signTheUserIn"/>
-		<div v-else>hello {{ email }}</div>
+		
+		<div v-if="userRole == 'user'">hello {{ email }}</div>
+		<div v-else-if="userRole == 'admin'">hello admin</div>
 	</main>
 
 </template>
