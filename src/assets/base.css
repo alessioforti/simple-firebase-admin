@@ -7,6 +7,14 @@
         @apply text-blue-400 hover:text-blue-600 underline;
         transition: all ease-in-out .1s
     }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="email"],
+    input[type="password"]
+     {
+        @apply mb-3 rounded-md;
+    }
 }
 
 @layer components {

@@ -99,14 +99,14 @@ const toggleForms = () => {
 				v-model="email"
 				type="email" 
 				placeholder="Email"
-				class="w-full mb-3 rounded-md"
+				class="w-full"
 			>
 			
 			<input 
 				v-model="pass" 
 				type="password" 
 				placeholder="Password"
-				class="w-full mb-3 rounded-md"
+				class="w-full"
 			>
 			<p class="text-sm text-right mb-3">
 				Already among us? 
@@ -126,14 +126,14 @@ const toggleForms = () => {
 				v-model="email"
 				type="email" 
 				placeholder="Email"
-				class="w-full mb-3 rounded-md"
+				class="w-full"
 			>
 			
 			<input 
 				v-model="pass" 
 				type="password" 
 				placeholder="Password"
-				class="w-full mb-3 rounded-md"
+				class="w-full"
 			>
 			<p class="text-sm text-right mb-3">
 				Not registerd yet? 
