@@ -6,11 +6,12 @@ import {
 	getAuth, 
 	onAuthStateChanged,
 	signOut
-	} from "firebase/auth";
+	} from 'firebase/auth'
+
 
 const auth = getAuth()
 const isSignedIn = ref(null)
-const user = null
+let user = null
 const email = ref('')
 
 onAuthStateChanged(auth, (user) => {

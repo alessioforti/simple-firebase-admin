@@ -6,12 +6,20 @@ import {
 	signInWithEmailAndPassword,
 	setPersistence,
 	browserLocalPersistence
-	} from "firebase/auth";
+	} from 'firebase/auth'
+import {
+	getFirestore,
+	collection, 
+	addDoc,
+	doc,
+	setDoc
+} from 'firebase/firestore'
 
+const auth = getAuth()
+const db = getFirestore()
 const email = ref('')
 const pass = ref('')
-const auth = getAuth()
-const user = ref(null)
+let user = null
 const isSignedIn = ref(null)
 const showLogInForm = ref(true)
 
@@ -22,12 +30,16 @@ const signUp = () => {
 		.then(() => {
 		   	return createUserWithEmailAndPassword(auth, email.value, pass.value)
 			.then((userCredential) => {
-				user.value = userCredential.user
+				user = userCredential.user
 				isSignedIn.value = true
 				emit('loggedIn', user)
 				email.value = ''
 				pass.value = ''
 				showLogInForm.value = true
+				return user
+			})
+			.then((user) => {
+				return setUser(user)
 			})
 			.catch((error) => {
 				console.log(error.code, error.message)
@@ -43,7 +55,7 @@ const signIn = () => {
 	.then(() => {
 		signInWithEmailAndPassword(auth, email.value, pass.value)
 		.then((userCredential) => {
-			user.value = userCredential.user
+			user = userCredential.user
 			isSignedIn.value = true
 			emit('loggedIn', user)
 			email.value = ''
@@ -55,6 +67,24 @@ const signIn = () => {
 	})
 	.catch((error) => {
 		console.log(error.code, error.message)
+	})
+}
+
+const setUser = async (user) => {
+	await setDoc(doc(db, "users", user.uid), {
+		email: user.email,
+		role: 'user',
+		nome: '',
+		cognome: '',
+		dataNascita: '',
+		via: '',
+		citta: '',
+		prov: '',
+		cittadinanza: '',
+		statoCivile: '',
+		professione: '',
+		altezza: '',
+		occhi: ''
 	})
 }
 
