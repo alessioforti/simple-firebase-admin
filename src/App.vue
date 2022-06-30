@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import SignUpInVue from './components/SignUpIn.vue'
 import User from './components/User.vue'
+import Admin from './components/Admin.vue'
 
 import { 
 	getAuth, 
@@ -73,8 +74,8 @@ const checkUserRole = async (user) => {
 	<main class="container-xl px-4 py-3 pt-12">
 		<SignUpInVue v-if="!isSignedIn" @logged-in="signTheUserIn"/>
 		
-		<User v-if="userRole == 'user'" :user-id="userId" />
-		<div v-else-if="userRole == 'admin'">hello admin</div>
+		<User v-if="userRole == 'user' && isSignedIn" :user-id="userId" />
+		<Admin v-else-if="userRole == 'admin' && isSignedIn" />
 	</main>
 
 </template>

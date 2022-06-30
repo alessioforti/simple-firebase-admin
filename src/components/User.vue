@@ -53,6 +53,8 @@ const updateData = async () => {
 		altezza: altezza.value,
 		statoCivile: statoCivile.value,
 		occhi: occhi.value
+	}).then(() => {
+		console.log('updated');
 	})
 }
 
@@ -76,8 +78,7 @@ const updateData = async () => {
 		>
 		<input 
 			type="date" 
-			v-model="dataNascita" 
-			placeholder="Data di nascita"
+			v-model="dataNascita"
 		>
 		<input 
 			type="text" 
@@ -124,8 +125,4 @@ const updateData = async () => {
 		</p>
 	</form>
 
-
-	<p>	dsfaws {{userId}}
-
-	{{nome}}</p>
 </template>
