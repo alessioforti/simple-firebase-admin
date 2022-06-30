@@ -14,7 +14,7 @@ const props = defineProps({
 	  <div class="modal-wrapper">
 		<div class="relative w-3/4 bg-white mx-auto p-8 pt-14 rounded-md">
 			<button
-				class="close-btn absolute top-0 right-0 p-2 bg-gray-50 rounded-md hover:bg-gray-100"
+				class="absolute top-0 right-0 p-2 bg-gray-50 rounded-md hover:bg-gray-100"
 				@click="$emit('close')"
 			  >
 			  <Close/>

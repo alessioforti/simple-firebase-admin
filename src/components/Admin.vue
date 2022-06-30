@@ -3,6 +3,8 @@ import { onBeforeMount, ref } from 'vue'
 import User from './User.vue'
 import Modal from './Modal.vue'
 import Close from './icons/close.vue'
+import Edit from './icons/Edit.vue'
+import Delete from './icons/Delete.vue'
 
 import { getAuth } from 'firebase/auth'
 import {
@@ -33,7 +35,6 @@ const deleteUser = async (userId) => {
 	await deleteDoc(doc(db, 'users', userId))
 	.then(() => {
 		users.value = users.value.filter(user => user.uid != userId)
-		console.log(users.value)
 	})
 }
 
@@ -41,24 +42,25 @@ const deleteUser = async (userId) => {
 
 <template>
 	<h1 class="text-2xl mb-6">Manage users</h1>
-	<div v-for="(user, index) in users" 
-		:key="user.uid"
-		class="flex items-center mb-3"
-	>
-		<span>{{user.data.email}}</span>
-		<span class="ml-auto">
-			<button 
-				@click="showModal = true; currentlyEditing = user.uid" 
-				class="btn bg-red-500 mr-2">
-				edit
-			</button>
-			<button 
-				@click="deleteUser(user.uid)"
-				class="btn bg-red-500">
-				x
-			</button>
-		</span>
-		
+	<div class="flex flex-col divide-y-[1px] divide-solid">
+		<div v-for="(user, index) in users" 
+			:key="user.uid"
+			class="flex items-center py-3"
+		>
+			<span>{{user.data.email}}</span>
+			<span class="ml-auto">
+				<button 
+					@click="showModal = true; currentlyEditing = user.uid" 
+					class="btn mr-2">
+					<Edit width="18" height="18"/>
+				</button>
+				<button 
+					@click="deleteUser(user.uid)"
+					class="btn bg-red-500 hover:bg-red-600">
+					<Delete width="18" height="18" />
+				</button>
+			</span>
+		</div>
 	</div>
 
 	<Teleport to="body">

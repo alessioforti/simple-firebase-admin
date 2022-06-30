@@ -74,6 +74,11 @@ const checkUserRole = async (user) => {
 	<main class="container-xl px-4 py-3 pt-12">
 		<SignUpInVue v-if="!isSignedIn" @logged-in="signTheUserIn"/>
 		
+		<h1 
+			v-if="userRole == 'user' && isSignedIn" 
+			class="text-2xl mb-6 text-center">
+			Welcome, please edit your profile
+		</h1>
 		<User v-if="userRole == 'user' && isSignedIn" :user-id="userId" />
 		<Admin v-else-if="userRole == 'admin' && isSignedIn" />
 	</main>

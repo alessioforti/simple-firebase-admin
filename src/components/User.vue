@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
+import Close from './icons/close.vue';
 
 import {
 	getFirestore,
@@ -23,6 +24,7 @@ const professione = ref()
 const altezza = ref()
 const statoCivile = ref()
 const occhi = ref()
+const showAlert = ref(false)
 
 onBeforeMount( async () => {
 	const docResp = await getDoc(doc(db, "users", props.userId))
@@ -54,7 +56,11 @@ const updateData = async () => {
 		statoCivile: statoCivile.value,
 		occhi: occhi.value
 	}).then(() => {
-		console.log('updated');
+		showAlert.value = true
+		setTimeout(() => {
+			showAlert.value = false
+		}, 3000)
+		console.log('updated')
 	})
 }
 
@@ -62,67 +68,101 @@ const updateData = async () => {
 
 
 <template>
-	<form 
-		@submit.prevent="updateData"
-		class="grid "
-	>
-		<input 
-			type="text" 
-			v-model="nome" 
-			placeholder="Nome"
+	<div class="w-2/3 mx-auto">
+		<form 
+			@submit.prevent="updateData"
+			class="mb-8"
 		>
-		<input 
-			type="text" 
-			v-model="cognome" 
-			placeholder="Cognome"
-		>
-		<input 
-			type="date" 
-			v-model="dataNascita"
-		>
-		<input 
-			type="text" 
-			v-model="via" 
-			placeholder="Via"
-		>
-		<input 
-			type="text" 
-			v-model="citta" 
-			placeholder="Città"
-		>
-		<input 
-			type="text" 
-			v-model="prov" 
-			placeholder="Provincia"
-		>
-		<input 
-			type="text" 
-			v-model="cittadinanza" 
-			placeholder="Cittadinanza"
-		>
-		<input 
-			type="text" 
-			v-model="statoCivile" 
-			placeholder="Stato Civile"
-		>
-		<input 
-			type="text" 
-			v-model="professione" 
-			placeholder="Professione"
-		>
-		<input 
-			type="text" 
-			v-model="altezza" 
-			placeholder="Altezza"
-		>
-		<input 
-			type="text" 
-			v-model="occhi" 
-			placeholder="Occhi"
-		>
-		<p class="text-right">
-			<button class="btn">Save</button>
-		</p>
-	</form>
+			<div class="w-full text-xl pb-2 my-4 border-b-2 border-sky-500">Name and Date of birth</div>
+			<div class="grid grid-cols-3 gap-3">
+				<input 
+					type="text" 
+					v-model="nome" 
+					placeholder="Nome"
+				>
+				<input 
+					type="text" 
+					v-model="cognome" 
+					placeholder="Cognome"
+				>
+				<input 
+					type="date" 
+					v-model="dataNascita"
+				>
+			</div>
+			<div class="w-full text-xl pb-2 my-4 border-b-2 border-sky-500">Address</div>
+			<div class="grid grid-cols-4 gap-3">
+				<input 
+					type="text" 
+					v-model="via" 
+					placeholder="Via"
+				>
+				<input 
+					type="text" 
+					v-model="citta" 
+					placeholder="Città"
+				>
+				<input 
+					type="text" 
+					v-model="prov" 
+					placeholder="Provincia"
+				>
+				<input 
+					type="text" 
+					v-model="cittadinanza" 
+					placeholder="Cittadinanza"
+				>
+			</div>
+			<div class="w-full text-xl pb-2 my-4 border-b-2 border-sky-500">About you</div>
+			<div class="grid grid-cols-4 gap-3">
+				<input 
+					type="text" 
+					v-model="statoCivile" 
+					placeholder="Stato Civile"
+				>
+				<input 
+					type="text" 
+					v-model="professione" 
+					placeholder="Professione"
+				>
+				<input 
+					type="text" 
+					v-model="altezza" 
+					placeholder="Altezza"
+				>
+				<input 
+					type="text" 
+					v-model="occhi" 
+					placeholder="Occhi"
+				>
+			</div>
 
+			<p class="w-full text-right mt-4">
+				<button class="btn">Save</button>
+			</p>
+		</form>
+		<Transition name="fade">
+			<div 
+			v-if="showAlert"
+			class="relative text-green-500 text-center py-4 border-green-500 border-2 rounded-md bg-green-200"
+			>Saved!
+				<Close 
+					@click="showAlert = false"
+					class="absolute top-0 right-0 p-1 rounded-bl-md bg-green-100 hover:bg-green-500 hover:text-white cursor-pointer"
+				/>
+			</div>
+		</Transition>
+	</div>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
